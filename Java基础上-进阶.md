@@ -451,16 +451,101 @@ public void eat(){
 -怎么调用父类的构造方法？
 -子类构造方法的第一行语句默认都是``super()``，**不写也存在，虚拟机会加载，且必须在第一行**
 如果想调用父类有参构造，必须手动写super进行调用。
+Person.java
+```
+public class Person {  
+    String name;  
+    int age;  
+    public Person(){  
+        System.out.println("父类的空参构造");  
+    }  
+    public Person(String name,int age){  
+        this.name = name;  
+        this.age = age;  
+        System.out.println("父类的带参构造");  
+    }  
+}
+```
+
+Student.java
+```
+public class Student extends Person{  
+    public Student(){  
+        super();//子类默认隐藏的方法  
+        System.out.println("子类的空参构造");  
+    }  
+  
+    public Student(String name,int age){  
+        super(name,age);  
+    }  
+}
+```
+
+Test.java:
+```
+public class Student extends Person{  
+    public Student(){  
+        super();//子类默认隐藏的方法  
+        System.out.println("子类的空参构造");  
+    }  
+  
+    public Student(String name,int age){  
+        super(name,age);  
+    }  
+}
+```
+
+this:理解为一个变量，表示当前方法调用者的地址值
+super:代表父类的存储空间
+
+this()：调用本类构造方法
+使用场景，例如默认所有学生是王老师
+Student.java:
+```
+package test;  
+  
+public class Student{  
+    String name;  
+    int age;  
+    String teacher;  
+    public Student(){  
+        //表示调用本类其他构造方法  
+        //这里的this也是必须在第一行
+        //细节：虚拟机这时候就不会再添加super()  
+        //原因：下面的构造有了，只要一个有super()就行了
+        this(null,0,"Mr.Wang");  
+    }  
+  
+    public Student(String name,int age,String teacher){  
+        this.age = age;  
+        this.name = name;  
+        this.teacher = teacher;  
+    }  
+}
+```
 
 
+### 3.多态
+#### 多态概述
+面向对象三大特征：封装、继承、多态
+封装：对象代表什么，就得封装对应用的数据，并提供数据对应的行为
+继承是多态的前提条件
+例如，Person类是Student类的父类
+此时，学生有学生形态和人的形态，这就是多态
+```
+Student s = new Student();//学生形态
+Person p = new Student();//人的形态
+```
 
+多态：同类型的对象，表现出不同的形态。
+多态的形式：
+```
+父类类型 对象名称 = 子类对象;
+```
 
-#### 1.自己设计
+多态的前提：
+-有继承/实现关系
+-有父类引用指向子类对象 ``Fu f = new Zi();``
+-有方法重写
 
-
-
-
-
-
-
-#### 2.用别人的
+例子：
