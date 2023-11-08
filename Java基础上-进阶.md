@@ -549,3 +549,99 @@ Person p = new Student();//人的形态
 -有方法重写
 
 例子：
+Person.java:
+```
+public class Person {  
+    private String name;  
+    private int age;  
+  
+    public Person() {  
+    }  
+  
+    public Person(String name, int age) {  
+        this.name = name;  
+        this.age = age;  
+    }  
+  
+    public String getName() {  
+        return name;  
+    }  
+  
+    public void setName(String name) {  
+        this.name = name;  
+    }  
+  
+    public int getAge() {  
+        return age;  
+    }  
+  
+    public void setAge(int age) {  
+        this.age = age;  
+    }  
+  
+    public void show(){  
+        System.out.println(name + "，" + age);  
+    }  
+}
+```
+Administrator.java:
+```
+public class Administrator extends Person{  
+    @Override  
+    public void show(){  
+        System.out.println("管理员的信息为：" + getName() + "," + getAge());  
+    }  
+}
+```
+Student.java:
+```
+public class Student extends Person {  
+    @Override  
+    public void show(){  
+        System.out.println("学生的信息为：" + getName() + "," + getAge());  
+    }  
+}
+```
+Teacher.java:
+```
+public class Teacher extends Person {  
+    @Override  
+    public void show() {  
+        System.out.println("老师的信息为：" + getName() + "," + getAge());  
+    }  
+}
+```
+Test.java:
+```
+public class Test {  
+    public static void main(String[] args) {  
+        Student s = new Student();  
+        s.setName("zhangsan");  
+        s.setAge(18);  
+  
+        Teacher t = new Teacher();  
+        t.setName("wang");  
+        t.setAge(27);  
+  
+        Administrator a = new Administrator();  
+        a.setName("admin");  
+        a.setAge(35);  
+  
+        register(s);  
+        register(t);  
+        register(a);  
+    }  
+  
+    //写一个方法，既能接收老师，又能接收学生，还能接收管理员  
+    public static void register(Person p) {  
+        p.show();  
+    }  
+}
+```
+通过多态，我们可以用一个父类Person接收老师，学生，管理员这些子类
+输出:
+```
+学生的信息为：zhangsan,18
+老师的信息为：wang,27
+管理员的信息为：admin,35
+```
