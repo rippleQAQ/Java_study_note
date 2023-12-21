@@ -755,3 +755,251 @@ final修饰变量：叫做常量，只能被赋值一次
 
 final修饰基本数据类型：数据值不能改变
 final修饰引用数据类型：地址值不能改变，对象内部可以改变
+
+#### 权限修饰符
+
+权限修饰符：是用来控制一个成员能够被访问的范围的。
+可以修饰成员变量、方法、构造方法、内部类。
+
+权限修饰符有四种作用范围：由小到大（private<空着<protected<public）
+
+![](Java基础上-进阶-photos/截图%202023-11-11%2000-13-48.png)
+
+实际开发中，一般只用private和public
+-成员变量私有
+-方法公开
+
+特例：如果方法中的代码是抽取其他方法中的共性代码，这个方法也一般私有
+
+#### 代码块
+{}
+##### 局部代码块
+在方法中的一个单独的代码块，可以以前结束变量的生命周期，在过去内存比较小的时候用到，如今用处不是很大了
+
+##### 构造代码块
+写在成员位置的代码块，在创建对象是优先于构造方法执行的，可以将多个构造方法中重复的部分写在构造代码块中。现在也被淘汰了，因为一定会被执行，不灵活。
+
+如果要灵活的话可以把重复的部分写在一个构造方法中，其他要用这个部分的构造方法用调用这个构造方法的方式实现
+
+##### 静态代码块
+格式：static{}
+特点：需要通过static关键字修饰，随着类的加载而加载，自动触发且**只执行一次**
+使用场景：在类加载的时候，做一些数据初始化时使用
+
+### 5.抽象类、接口、内部类
+#### 抽象类
+抽象方法：将子类**共性的**行为（方法）抽取到父类之后。由于每一个子类执行的内容是不一样的，所以在父类中**不能确定具体的方法体**，该方法就可以定义为抽象方法
+
+抽象类：一个类中**存在抽象方法**，那么该类就必须**声明为抽象类**
+
+定义格式：
+抽象方法的定义格式：
+```
+public abstract 返回值类型 方法名(参数列表);
+```
+抽象类的定义格式：
+```
+public abstract class 类名{};
+```
+
+注意事项：
+1.抽象类不能实例化
+2.抽象类中不一定有抽象方法，有抽象方法的类一定是抽象类
+3.抽象类可以有构造方法
+4.抽象类的子类要么重写抽象类的所有抽象方法，要么是抽象类
+
+抽象类和抽象方法的意义
+强制子类必须按照某种格式写，方便多人开发
+
+当直接创建顶层父类没有意义，不想让别人直接区创建这种对象时，也可以写成抽象的。
+
+#### 接口
+接口就是一种规则，是对行为的抽象
+
+当部分类中需要用到相似的代码，可以定义接口规范
+
+接口的定义和使用
+使用关键字interface定义
+```
+public interface 接口名{}
+```
+
+注意事项：
+1.接口不能实例化
+2.接口和类之间是实现关系，通过implements关键字表示
+
+```
+public class 类名 implements 接口名{}
+```
+
+3.接口的子类（实现类）要么重写接口中的所有方法，要么是抽象类
+4.接口和类之间的实现关系可以但实现，也可以多实现
+
+```
+public class 类名 implements 接口名1,接口名2{}
+```
+
+5.实现类还可以在继承一个类的同时实现多个接口
+
+```
+public class 类名 extends 父类 implements 接口名1,接口名2{}
+```
+
+例如：
+Swim.java:
+```
+public interface Swim {  
+    public abstract void swim();  
+}
+```
+
+Animal.Java:
+```
+public abstract class Animal {  
+    private String name;  
+    private int age;  
+  
+    public Animal() {  
+    }  
+  
+    public Animal(String name, int age) {  
+        this.name = name;  
+        this.age = age;  
+    }  
+  
+    public String getName() {  
+        return name;  
+    }  
+  
+    public void setName(String name) {  
+        this.name = name;  
+    }  
+  
+    public int getAge() {  
+        return age;  
+    }  
+  
+    public void setAge(int age) {  
+        this.age = age;  
+    }  
+  
+    public abstract void eat();  
+}
+```
+
+Frog.Java:
+```
+public class Frog extends Animal implements Swim{  
+    public Frog() {  
+    }  
+  
+    public Frog(String name, int age) {  
+        super(name, age);  
+    }  
+  
+    @Override  
+    public void eat() {  
+        System.out.println("青蛙在吃虫子");  
+    }  
+  
+    @Override  
+    public void swim() {  
+        System.out.println("青蛙在蛙泳");  
+    }  
+}
+```
+
+Dog.Java:
+```
+public class Dog extends Animal implements Swim{  
+  
+    public Dog() {  
+    }  
+  
+    public Dog(String name, int age) {  
+        super(name, age);  
+    }  
+  
+    @Override  
+    public void eat() {  
+        System.out.println("狗吃骨头");  
+    }  
+  
+    @Override  
+    public void swim() {  
+        System.out.println("狗在狗刨");  
+    }  
+}
+```
+
+Rabbit.Java:
+```
+public class Rabbit extends Animal{  
+  
+    public Rabbit() {  
+    }  
+  
+    public Rabbit(String name, int age) {  
+        super(name, age);  
+    }  
+  
+    @Override  
+    public void eat() {  
+        System.out.println("兔子在吃胡萝卜");  
+    }  
+}
+```
+
+Test.Java:
+```
+public class Test {  
+    public static void main(String[] args) {  
+        Frog f = new Frog("小青",1);  
+        System.out.println(f.getName() + ", " + f.getAge());  
+        f.eat();  
+        f.swim();  
+  
+        Dog d = new Dog("旺财",4);  
+        System.out.println(d.getName() + ", " + d.getAge());  
+        d.eat();  
+        d.swim();  
+  
+        Rabbit r = new Rabbit("小白",2);  
+        System.out.println(r.getName() + ", " + r.getAge());  
+        r.eat();  
+    }  
+}
+```
+
+输出：
+```
+小青, 1
+青蛙在吃虫子
+青蛙在蛙泳
+旺财, 4
+狗吃骨头
+狗在狗刨
+小白, 2
+兔子在吃胡萝卜
+```
+
+接口中成员的特点：
+-成员变量
+	只能是常量
+	默认修饰符:public static final （就算不写，Java也会加上）
+-成员方法
+	JDK7以前：只能定义抽象方法
+	默认修饰符:public abstract
+-构造方法
+	没有构造方法
+
+类和接口的关系：
+-类和类之间的关系：
+	继承关系，只能单继承，不能多继承，但是可以多层继承
+-类和接口的关系：
+	实现关系，可以单实现，也可以多实现，还可以在继承一个类的同时实现接口
+-接口和接口之间的关系：
+	继承关系，可以单继承，可以多继承
+	如果实现类实现了最下面的字接口，那么要重写所有的方法
+
+
